@@ -1,0 +1,45 @@
+.LANDED {
+    text-align: center;
+    border: 4px;
+    background-color: forestgreen;
+    font-size: smaller;
+    width: 60px;
+    align-items: center;
+    border-radius: 5px;
+    color: white;
+    padding: 3px;
+}
+
+.ON.SCHEDULE {
+    text-align: center;
+    border: 4px;
+    background-color: forestgreen;
+    font-size: smaller;
+    width: 90px;
+    align-items: center;
+    border-radius: 5px;
+    color: white;
+    padding: 3px;
+}
+
+.DELAYED {
+    text-align: center;
+    border: 4px;
+    background-color: darkorange;
+    font-size: smaller;
+    width: 60px;
+    align-items: center;
+    border-radius: 5px;
+    color: white;
+    padding: 3px;
+}
+
+.rightBorder {
+    border-left: #f5f5f5 1px solid;
+    padding-left: 7px;
+}
+
+.moreDetail {
+    font-weight: bold;
+    color: #2b730d;
+}

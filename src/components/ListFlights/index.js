@@ -6,11 +6,17 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import FlightDetail from '../FlightDetail'
+
+const formatAddr = value => <div><div className="rightBorder"><div>{value}</div><span>flight name here</span></div></div>;
+const formatStatus = value => <div className={value}>{value}</div>;
 
 const columns = [
   { id: 'time', label: 'Name', minWidth: 170 },
-  { id: 'location', label: 'location', minWidth: 100 },
-  { id: 'status', label: 'status', minWidth: 100 },
+  { id: 'location', label: 'location', minWidth: 100, format: formatAddr },
+  { id: 'status', label: 'status', minWidth: 100, format: formatStatus },
   { id: 'terminal', label: 'terminal', minWidth: 170 }
 ];
 
@@ -35,9 +41,20 @@ const useStyles = makeStyles({
 
 const ListFlights = () => {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const [flight, setFlightDetail] = React.useState({});
+  function handleFlightDetail() {
+    setFlightDetail(this)
+    setOpen(true);
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
 
   return (
     <Paper className={classes.root}>
+      <FlightDetail open={open} handleClose={handleClose} flight={flight} key="detail"/>
       <TableContainer className={classes.container}>
         <Table aria-label="sticky table">
           <TableBody>
@@ -48,10 +65,17 @@ const ListFlights = () => {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {value}
+                        {column.format ? column.format(value) : value}
                       </TableCell>
                     );
                   })}
+                  <TableCell align="right">
+                    <div className="moreDetail">
+                      More details
+                      <IconButton onClick={handleFlightDetail.bind(row)}>
+                        <ArrowForwardIcon style={{ color: 'green' }} />
+                      </IconButton></div>
+                  </TableCell>
                 </TableRow>
               );
             })}
