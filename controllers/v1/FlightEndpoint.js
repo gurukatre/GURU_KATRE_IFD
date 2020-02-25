@@ -14,4 +14,28 @@ module.exports = class ProfileEndpoint {
             });
         });
     }
+
+    putFlight(req, res) {
+        const __query = req.body.query;
+        const __data = req.body.data;
+        Flight_Schema.findOneAndUpdate(__query, __data, {upsert: true}, function(err, flight) {
+            if(err) return res.status(httpCodes.NOTFOUND).json({err});
+            return res.status(httpCodes.OK).json({flight});
+        });
+        
+    }
+    
+    getFlight(req, res) {
+        Flight_Schema.find(req.body, (err, flight) => {
+            if(err) return res.status(httpCodes.NOTFOUND).json({err});
+            return res.status(httpCodes.OK).json({flight});
+        });
+    }
+    
+    deleteFlight(req, res) {
+        Flight_Schema.remove(req.body, function(err) {
+            if(err) return res.status(httpCodes.NOTFOUND).json({err});
+            return res.status(httpCodes.OK).json({success: true});
+        });
+    }
 }
