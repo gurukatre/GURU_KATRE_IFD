@@ -43,3 +43,12 @@
     font-weight: bold;
     color: #2b730d;
 }
+
+.paddingTen {
+    padding: 10px;
+}
+
+.formLabel {
+    font-weight: bold !important;
+    padding: 14px !important;
+}

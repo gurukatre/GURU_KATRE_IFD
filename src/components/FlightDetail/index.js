@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -10,27 +11,40 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+
 
 class FlightDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
             open: props.open,
-            selectedIndex: 1
+            value: props.flight.status
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ open: nextProps.open });
+        this.setState({ open: nextProps.open, value: nextProps.flight.status });
     }
 
     handleClose = () => {
         this.props.handleClose();
     };
 
-    handleListItemClick = (event, index) => {
-        this.setState({selectedIndex: index});
+    handleChange = event => {
+        this.setState({value: event.target.value});
     };
+
+    handleUpdate = id => {
+        console.log('update');
+    }
 
     render() {
         const {open, flight} = this.props;
@@ -40,47 +54,83 @@ class FlightDetail extends Component {
                     <DialogTitle id="form-dialog-title">Flight Details</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                        <List component="nav" aria-label="secondary mailbox folder">
-                            <ListItem button
-                            selected={this.state.selectedIndex === 1}
-                            onClick={event => this.handleListItemClick(event, 1)}
-                            >
-                            <ListItemText primary="LANDAD" />
-                            </ListItem>
-                            <Divider variant="inset" component="li" />
-                            <ListItem
-                            button
-                            selected={this.state.selectedIndex === 2}
-                            onClick={event => this.handleListItemClick(event, 2)}
-                            >
-                                <ListItemText primary="ON SCHEDULE" />
-                            </ListItem>
-                            <Divider variant="inset" component="li" />
-                            <ListItem
-                            button
-                            selected={this.state.selectedIndex === 3}
-                            onClick={event => this.handleListItemClick(event, 3)}
-                            >
-                                <ListItemText primary="DELAYED" />
-                            </ListItem>
-                        </List>
-                            Time: {flight.time} Location: {flight.location}
+                        _id: "035c3370-5791-11ea-a11d-a98752bdf106"
+                        <Grid container>
+                            <Grid item xs={6}>
+                                <Paper className='paddingTen'>flight Code</Paper>
+                            </Grid>
+                            <Grid item xs>
+                                <Paper className='paddingTen'>{flight.flightCode}</Paper>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Paper className='paddingTen'>scheduled Arrival</Paper>
+                            </Grid>
+                            <Grid item xs>
+                                <Paper className='paddingTen'>{flight.scheduledArrival}</Paper>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Paper className='paddingTen'>flight Provider</Paper>
+                            </Grid>
+                            <Grid item xs>
+                                <Paper className='paddingTen'>{flight.flightProvider}</Paper>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Paper className='paddingTen'>source Name</Paper>
+                            </Grid>
+                            <Grid item xs>
+                                <Paper className='paddingTen'>{flight.sourcePortName}</Paper>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Paper className='paddingTen'>destination Name</Paper>
+                            </Grid>
+                            <Grid item xs>
+                                <Paper className='paddingTen'>{flight.destinationPortName}</Paper>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Paper className='paddingTen'>source Code</Paper>
+                            </Grid>
+                            <Grid item xs>
+                                <Paper className='paddingTen'>{flight.sourcePortCode}</Paper>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Paper className='paddingTen'>destination Code</Paper>
+                            </Grid>
+                            <Grid item xs>
+                                <Paper className='paddingTen'>{flight.destinationPortCode}</Paper>
+                            </Grid>
+                        </Grid>
+                        
+                        <FormControl component="fieldset" >
+                            <FormLabel className="formLabel">Status :</FormLabel>
+                            <RadioGroup aria-label="Status" name="Status" value={this.state.value} onChange={this.handleChange}>
+                            <FormControlLabel
+                                value="LANDED"
+                                control={<Radio color="primary" />}
+                                label="LANDED"
+                                labelPlacement="start"
+                            />
+                            <FormControlLabel
+                                value="ON SCHEDULE"
+                                control={<Radio color="primary" />}
+                                label="ON SCHEDULE"
+                                labelPlacement="start"
+                            />
+                            <FormControlLabel
+                                value="DELAYED"
+                                control={<Radio color="primary" />}
+                                label="DELAYED"
+                                labelPlacement="start"
+                            />
+                            </RadioGroup>
+                        </FormControl>
                         </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Email Address"
-                            type="email"
-                            fullWidth
-                        />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.handleClose} color="primary">
-                            Subscribe
+                        <Button onClick={this.handleUpdate} color="primary">
+                            Update Status
                         </Button>
                     </DialogActions>
                 </Dialog>
