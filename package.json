@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.9.3",
+    "@material-ui/icons": "^4.9.1",
     "axios": "^0.19.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.3.1",
@@ -36,6 +38,8 @@
     "react-scripts": "3.0.1",
     "redux": "^4.0.1",
     "redux-saga": "^1.0.5",
+    "sequelize": "^4.37.6",
+    "sequelize-cli": "^4.0.0",
     "swagger-ui-dist": "^3.18.1"
   },
   "scripts": {

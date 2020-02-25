@@ -39,7 +39,7 @@ const useStyles = makeStyles({
   }
 });
 
-const ListFlights = () => {
+const ListFlights = (flights) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [flight, setFlightDetail] = React.useState({});
@@ -52,6 +52,10 @@ const ListFlights = () => {
     setOpen(false);
   }
 
+  flights.flights && Object.keys(flights.flights).map((key) => {
+    const flight = flights.flights[key]
+    console.log(flight);
+  });
   return (
     <Paper className={classes.root}>
       <FlightDetail open={open} handleClose={handleClose} flight={flight} key="detail"/>
