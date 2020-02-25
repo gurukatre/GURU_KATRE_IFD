@@ -52,3 +52,10 @@
     font-weight: bold !important;
     padding: 14px !important;
 }
+
+.alert {
+    top: 24px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+}

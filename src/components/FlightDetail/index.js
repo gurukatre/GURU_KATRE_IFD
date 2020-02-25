@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -19,23 +13,39 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import FlightAPI from '../../services/FlightAPI';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
+const Alert = props => <MuiAlert elevation={6} variant="filled" {...props} />;
 
 class FlightDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
             open: props.open,
-            value: props.flight.status
+            value: props.flight.status,
+            flightCode: props.flight.flightCode,
+            actionOpen: false,
+            severity: ''
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ open: nextProps.open, value: nextProps.flight.status });
+        this.setState({
+            open: nextProps.open,
+            value: nextProps.flight.status,
+            flightCode: nextProps.flight.flightCode
+        });
     }
 
     handleClose = () => {
-        this.props.handleClose();
+        this.props.handleClose(this.state.value);
+    };
+
+    handleCloseAction = () => {
+        this.setState({actionOpen: false});
+        this.handleClose();
     };
 
     handleChange = event => {
@@ -43,7 +53,29 @@ class FlightDetail extends Component {
     };
 
     handleUpdate = id => {
-        console.log('update');
+        const {flightCode, value} = this.state;
+        FlightAPI.putFlight({
+            "query" : {
+                "flightCode": flightCode
+            },
+            "data" : {
+                "status": value
+            }
+        }).then(res => {
+            if(res.status === 200) {
+                this.setState({
+                    actionOpen: true,
+                    message: 'Updated Successfully',
+                    severity: 'success'
+                });
+            } else {
+                this.setState({
+                    actionOpen: true,
+                    message: 'Something Went wrong',
+                    severity: 'error'
+                })
+            }
+        })
     }
 
     render() {
@@ -53,8 +85,6 @@ class FlightDetail extends Component {
                 <Dialog fullWidth maxWidth="sm" open={open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Flight Details</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>
-                        _id: "035c3370-5791-11ea-a11d-a98752bdf106"
                         <Grid container>
                             <Grid item xs={6}>
                                 <Paper className='paddingTen'>flight Code</Paper>
@@ -78,25 +108,13 @@ class FlightDetail extends Component {
                                 <Paper className='paddingTen'>source Name</Paper>
                             </Grid>
                             <Grid item xs>
-                                <Paper className='paddingTen'>{flight.sourcePortName}</Paper>
+                                <Paper className='paddingTen'>{flight.sourcePortName} ({flight.sourcePortCode})</Paper>
                             </Grid>
                             <Grid item xs={6}>
                                 <Paper className='paddingTen'>destination Name</Paper>
                             </Grid>
                             <Grid item xs>
-                                <Paper className='paddingTen'>{flight.destinationPortName}</Paper>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Paper className='paddingTen'>source Code</Paper>
-                            </Grid>
-                            <Grid item xs>
-                                <Paper className='paddingTen'>{flight.sourcePortCode}</Paper>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Paper className='paddingTen'>destination Code</Paper>
-                            </Grid>
-                            <Grid item xs>
-                                <Paper className='paddingTen'>{flight.destinationPortCode}</Paper>
+                                <Paper className='paddingTen'>{flight.destinationPortName} ({flight.destinationPortCode})</Paper>
                             </Grid>
                         </Grid>
                         
@@ -123,7 +141,6 @@ class FlightDetail extends Component {
                             />
                             </RadioGroup>
                         </FormControl>
-                        </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
@@ -134,6 +151,11 @@ class FlightDetail extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
+                <Snackbar open={this.state.actionOpen} className="alert" autoHideDuration={500} onClose={this.handleCloseAction}>
+                <Alert onClose={this.handleCloseAction} severity={this.state.severity}>
+                    {this.state.message} !
+                </Alert>
+                </Snackbar>
             </div>
         );
     }

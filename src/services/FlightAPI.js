@@ -28,9 +28,9 @@ class FlightAPI {
   
     putFlight(data){
         return axios({
-            method: "post",
+            method: "put",
             url: this.API_URL + this.FLIGHT_URL,
-            data: data
+            data: {...data}
           });
     }
 

@@ -31,16 +31,23 @@ const useStyles = makeStyles({
   }
 });
 
-const ListFlights = (flights) => {
+const ListFlights = (props) => {
+
+  let flights = props.flights && {...props.flights};
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [key, setKey] = React.useState();
   const [flight, setFlightDetail] = React.useState({});
-  function handleFlightDetail() {
+
+
+  function handleFlightDetail(key) {
+    setKey(key);
     setFlightDetail(this)
     setOpen(true);
   }
 
-  function handleClose() {
+  function handleClose(value) {
+    flights[key].status = value;
     setOpen(false);
   }
 
@@ -50,8 +57,8 @@ const ListFlights = (flights) => {
       <TableContainer className={classes.container}>
         <Table aria-label="sticky table">
           <TableBody>
-            {flights.flights && Object.keys(flights.flights).map((key) => {
-              const row = flights.flights[key]
+            {flights && Object.keys(flights).map((key) => {
+              const row = flights[key]
               return (
                 <TableRow hover tabIndex={-1} key={row._id}>
                   {columns.map(column => {
@@ -66,7 +73,7 @@ const ListFlights = (flights) => {
                   <TableCell align="right">
                     <div className="moreDetail">
                       More details
-                      <IconButton onClick={handleFlightDetail.bind(row)}>
+                      <IconButton onClick={handleFlightDetail.bind(row, key)}>
                         <ArrowForwardIcon style={{ color: 'green' }} />
                       </IconButton></div>
                   </TableCell>
