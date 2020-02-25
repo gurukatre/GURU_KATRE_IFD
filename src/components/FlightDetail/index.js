@@ -3,11 +3,9 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -24,10 +22,12 @@ class FlightDetail extends Component {
         super(props);
         this.state = {
             open: props.open,
+            id: props.flight._id,
             value: props.flight.status,
             flightCode: props.flight.flightCode,
             actionOpen: false,
-            severity: ''
+            severity: '',
+            update: false
         }
     }
 
@@ -35,12 +35,14 @@ class FlightDetail extends Component {
         this.setState({
             open: nextProps.open,
             value: nextProps.flight.status,
-            flightCode: nextProps.flight.flightCode
+            flightCode: nextProps.flight.flightCode,
+            id: nextProps.flight._id,
+            update: false
         });
     }
 
     handleClose = () => {
-        this.props.handleClose(this.state.value);
+        this.props.handleClose(this.state.update && this.state.value);
     };
 
     handleCloseAction = () => {
@@ -52,7 +54,7 @@ class FlightDetail extends Component {
         this.setState({value: event.target.value});
     };
 
-    handleUpdate = id => {
+    handleUpdate = () => {
         const {flightCode, value} = this.state;
         FlightAPI.putFlight({
             "query" : {
@@ -66,6 +68,25 @@ class FlightDetail extends Component {
                 this.setState({
                     actionOpen: true,
                     message: 'Updated Successfully',
+                    severity: 'success',
+                    update: true
+                });
+            } else {
+                this.setState({
+                    actionOpen: true,
+                    message: 'Something Went wrong',
+                    severity: 'error'
+                })
+            }
+        })
+    }
+
+    handleDelete = () => {
+        FlightAPI.deleteFlight({"_id": this.state.id}).then(res => {
+            if(res.status === 200) {
+                this.setState({
+                    actionOpen: true,
+                    message: 'Delete Successfully',
                     severity: 'success'
                 });
             } else {
@@ -148,6 +169,9 @@ class FlightDetail extends Component {
                         </Button>
                         <Button onClick={this.handleUpdate} color="primary">
                             Update Status
+                        </Button>
+                        <Button onClick={this.handleDelete} color="secondary">
+                            Delete
                         </Button>
                     </DialogActions>
                 </Dialog>

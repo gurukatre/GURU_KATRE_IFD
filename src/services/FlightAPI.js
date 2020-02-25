@@ -34,11 +34,11 @@ class FlightAPI {
           });
     }
 
-    deleteFlights(data){
+    deleteFlight(data){
         return axios({
             method: "delete",
             url: this.API_URL + this.FLIGHT_URL,
-            data: data
+            data: {...data}
           });
     }
 }

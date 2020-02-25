@@ -8,7 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import FlightDetail from '../FlightDetail'
+import FlightDetail from '../FlightDetail';
 
 const formatAddr = row => <div><div className="rightBorder"><div>{row['destinationPortName']}</div><span>{row['flightProvider']}</span></div></div>;
 const formatStatus = row => <div className={row['status']}>{row['status']}</div>;
@@ -47,7 +47,9 @@ const ListFlights = (props) => {
   }
 
   function handleClose(value) {
-    flights[key].status = value;
+    if(value) {
+      flights[key].status = value;
+    }
     setOpen(false);
   }
 
