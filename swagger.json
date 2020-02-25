@@ -1,0 +1,24 @@
+{
+  "swagger": "2.0",
+  "host": "localhost:5000",
+  "basePath": "/",
+  "tags": [
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+  },
+  "securityDefinitions": {
+    "Authorization": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
