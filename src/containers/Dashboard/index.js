@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
+import FlightAPI from '../../services/FlightAPI';
 import ListFlights from '../../components/ListFlights';
 import Header from '../../components/Header';
 
 class Dashboard extends Component {
-
-  shouldComponentUpdate(nextProps) {
-    if(!nextProps.flights) {
-      return false;
+  constructor(props){
+    super(props)
+    this.state = {
+      flights: null
     }
-    return true;
   }
 
   render() {
-	const { flights } = this.props;
+	const { flights } = this.state;
     return (
       <div id="wrapper">
         <Header />
@@ -23,18 +22,12 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    this.props.requestFlights();
+    FlightAPI.getFlights().then(res => {
+      if(res.status === 200) {
+        this.setState({flights: res.data.flight})
+      }
+    });
   }
 }
 
-const mapStateToProps = state => {
-  return { ...state.flights };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    requestFlights: () => dispatch({ type: "FLIGHT_API_CALL_REQUEST" })
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default Dashboard;
