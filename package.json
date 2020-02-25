@@ -36,8 +36,6 @@
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-    "redux": "^4.0.1",
-    "redux-saga": "^1.0.5",
     "sequelize": "^4.37.6",
     "sequelize-cli": "^4.0.0",
     "swagger-ui-dist": "^3.18.1"
