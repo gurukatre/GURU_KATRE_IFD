@@ -10,11 +10,25 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import FlightDetail from '../FlightDetail';
 
-const formatAddr = row => <div><div className="rightBorder"><div>{row['destinationPortName']}</div><span>{row['flightProvider']}</span></div></div>;
+const formatAddr = row => <div><div className="rightBorder"><div className="bold">{row['destinationPortName']}</div><span>{row['flightProvider']}</span></div></div>;
 const formatStatus = row => <div className={row['status']}>{row['status']}</div>;
+const formatArrival = row => {
+  let date = new Date(row['scheduledArrival']);
+  let previousTime = '';
+  if(row['status'] == 'DELAYED') {
+    let newDate = new Date(date.getTime() + 15*60000);
+    previousTime = (newDate.getHours()<10?'0':'') + newDate.getHours() + ':' + (newDate.getMinutes()<10?'0':'') + newDate.getMinutes();
+  }
 
+  if(previousTime) {
+    return <div><s className="SmallFont">{(date.getHours()<10?'0':'') + date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes()}</s>  {previousTime}</div>;
+  } else {
+    return (date.getHours()<10?'0':'') + date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes();
+  }
+  
+}
 const columns = [
-  { id: 'scheduledArrival', label: 'Name', minWidth: 170 },
+  { id: 'scheduledArrival', label: 'Name', minWidth: 170, format: formatArrival },
   { id: 'destinationPortName', label: 'location', minWidth: 100, format: formatAddr },
   { id: 'status', label: 'status', minWidth: 100, format: formatStatus }
 ];
@@ -49,6 +63,9 @@ const ListFlights = (props) => {
   function handleClose(value) {
     if(value) {
       flights[key].status = value;
+    }
+    else {
+      props.fetchFlights();
     }
     setOpen(false);
   }

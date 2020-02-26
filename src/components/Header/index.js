@@ -38,6 +38,7 @@ const Header = props => {
   };
   const handleClose = () => {
     setOpen(false);
+    props.fetchFlights();
   }
 
   const menuId = 'primary-search-account-menu';

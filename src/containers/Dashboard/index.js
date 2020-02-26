@@ -11,22 +11,26 @@ class Dashboard extends Component {
     }
   }
 
-  render() {
-	const { flights } = this.state;
-    return (
-      <div id="wrapper">
-        <Header />
-        <ListFlights flights={flights} />
-      </div>
-    );
-  }
-
-  componentDidMount() {
+  fetchFlights = () => {
     FlightAPI.getFlights().then(res => {
       if(res.status === 200) {
         this.setState({flights: res.data.flight})
       }
     });
+  }
+
+  render() {
+	const { flights } = this.state;
+    return (
+      <div id="wrapper">
+        <Header fetchFlights={this.fetchFlights} />
+        <ListFlights flights={flights} fetchFlights={this.fetchFlights} />
+      </div>
+    );
+  }
+
+  componentDidMount() {
+    this.fetchFlights();
   }
 }
 

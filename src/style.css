@@ -63,3 +63,11 @@
 .MuiFormControl-root.MuiTextField-root {
     margin:20px
 }
+
+.bold {
+    font-weight: bold;
+}
+
+.SmallFont {
+    font-size: x-small;
+}
