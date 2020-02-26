@@ -45,7 +45,7 @@ const Header = props => {
 
   return (
     <div className={classes.grow}>
-      <AddFlight open={open} handleClose={handleClose} key="detail"/>
+      {open && <AddFlight open={open} handleClose={handleClose} key="detail"/>}
       <AppBar position="static">
         <Toolbar>
           <IconButton
