@@ -22,11 +22,11 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    // FlightAPI.getFlights().then(res => {
-    //   if(res.status === 200) {
-    //     this.setState({flights: res.data.flight})
-    //   }
-    // });
+    FlightAPI.getFlights().then(res => {
+      if(res.status === 200) {
+        this.setState({flights: res.data.flight})
+      }
+    });
   }
 }
 

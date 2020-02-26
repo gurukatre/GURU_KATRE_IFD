@@ -1,5 +1,5 @@
 import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -31,13 +31,12 @@ const useStyles = makeStyles(theme => ({
 
 const Header = props => {
   const classes = useStyles();
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
 
   const handleAddFlight = event => {
     setOpen(true);
   };
-  function handleClose() {
+  const handleClose = () => {
     setOpen(false);
   }
 
